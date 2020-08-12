@@ -8,6 +8,8 @@ use App\User;
 use App\Bank;
 use App\Transaction;
 use Illuminate\Support\Facades\Auth;
+use AshAllenDesign\LaravelExchangeRates\Classes\ExchangeRate;
+// use ExchangeRate;
 
 class AccountController extends Controller
 {
@@ -99,9 +101,12 @@ class AccountController extends Controller
 
     public function deposit(){
         $request=Request();
+        $current_account=Account::where('id',$request->id)->first();
+        $exchangeRates = new ExchangeRate();
+        $result = $exchangeRates->convert($request->amount, 'USD',$current_account->currency);
         $transaction=Transaction::create([
             'account_id'=>$request->id,
-            'amount'=>$request->amount,
+            'amount'=>$result,
             'date'=>now(),
         ]);
         $transaction->save();

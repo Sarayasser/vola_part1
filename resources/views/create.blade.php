@@ -24,7 +24,7 @@
     <label for="exampleFormControlSelect2">Currency</label>
     <select class="form-control" name="currency">
       <option>USD</option>
-      <option>EURO</option>
+      <option>EUR</option>
       <option>EGP</option>
       <option>SAR</option>
     </select>
