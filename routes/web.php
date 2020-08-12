@@ -35,7 +35,6 @@ Route::get('/home/{id}/del','AccountController@delete')->name('account.delete');
 Route::get('/home/{id}/{filter}','AccountController@filterDate')->name('account.filterDate');
 Route::get('/home/{filter}/filter','AccountController@filterBank')->name('account.filterBank');
 
-
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');

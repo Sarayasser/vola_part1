@@ -80,6 +80,7 @@ class AccountController extends Controller
         return redirect('/home');
     }
 
+<<<<<<< HEAD
     public function createTrans(){
         $request=Request();
         $account=Account::where('id',$request->id)->first();
@@ -180,6 +181,27 @@ class AccountController extends Controller
             $account=Account::where('id',$request->id)->first();
             // dd($trans);
             return view('show',['account'=>$account,'trans'=>$trans]);
+=======
+    public function filterBank(){
+        $request=Request();
+        // dd($request);
+        $banks=Bank::all();
+        if($request->filter == "1"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "2"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "3"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "all"){
+            $accounts=Account::all();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+>>>>>>> f98d2f724c6c173937606e09c692ca10d4bcbc87
         }
 
     }

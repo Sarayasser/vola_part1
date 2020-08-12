@@ -14,6 +14,13 @@
 <div class="col-6">
 <a type="button" class="btn btn-success" href="{{route('account.create')}}">Create new Account</a>
 </div>
+<div class="col-3 mt-3">
+<h5>Banks filter:</h5>
+<a class="btn btn-dark mr-2" href="{{route('account.filterBank',['filter'=>'all'])}}">All</a>
+    @foreach($banks as $bank)
+  <a class="btn btn-dark mr-2" href="{{route('account.filterBank',['filter'=>$bank->id])}}">{{$bank->bank_name}}</a>
+    @endforeach
+</div>
 
 <div class="col-3 mt-3">
 <h5>Banks filter:</h5>
