@@ -106,6 +106,7 @@ class AccountController extends Controller
         $result = $exchangeRates->convert($request->amount, 'USD',$current_account->currency);
         $transaction=Transaction::create([
             'account_id'=>$request->id,
+            'type_of_transaction'=>'deposit',
             'amount'=>$result,
             'date'=>now(),
         ]);
@@ -123,6 +124,7 @@ class AccountController extends Controller
         $transaction=Transaction::create([
             'account_id'=>$request->id,
             'amount'=>$request->amount,
+            'type_of_transaction'=>'withdraw',
             'date'=>now(),
         ]);
         $transaction->save();
@@ -142,6 +144,7 @@ class AccountController extends Controller
             'account_id'=>$request->id,
             'accountto_id'=>$request->accountto_id,
             'amount'=>$request->amount,
+            'type_of_transaction'=>'transfer',
             'date'=>now(),
         ]);
         $transaction->save();
