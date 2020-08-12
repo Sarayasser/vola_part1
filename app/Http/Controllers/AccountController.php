@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use App\Account;
 use App\User;
 use App\Bank;
+use App\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
     public function index(){
         $accounts=Account::all();
-        return view('index',['accounts'=>$accounts]);
+        $banks=Bank::all();
+        return view('index',['accounts'=>$accounts,'banks'=>$banks]);
     }
     public function create(){
         $banks=Bank::all();
@@ -33,7 +35,11 @@ class AccountController extends Controller
         return redirect('/home');
     }
     public function show(){
-
+        $request=Request();
+        $account=Account::where('id',$request->id)->first();
+        $trans=Transaction::where('account_id',$request->id)->get();
+        // dd($trans);
+        return view('show',['account'=>$account,'trans'=>$trans]);
     }
     public function edit(){
         $request=Request();
@@ -54,7 +60,10 @@ class AccountController extends Controller
         return redirect('home');
     }
     public function delete(){
-
+        $request=Request();
+        $trans=Transaction::where('id',$request->id)->first();
+        $trans->rollback();
+        // dd($request->id);
     }
     public function status(){
         $request=Request();
@@ -69,5 +78,109 @@ class AccountController extends Controller
         $account->save();
 
         return redirect('/home');
+    }
+
+    public function createTrans(){
+        $request=Request();
+        $account=Account::where('id',$request->id)->first();
+        // dd($request->type);
+        if($request->type == "deposit"){
+            // dd($request->type);
+            return view('transactions/deposite',['account'=>$account]);
+        }
+        if($request->type == "withdraw"){
+            return view('transactions/withdraw',['account'=>$account]);
+        }
+        if($request->type == "transfer"){
+            return view('transactions/transfer',['account'=>$account]);
+        }
+
+    }
+
+    public function deposit(){
+        $request=Request();
+        $transaction=Transaction::create([
+            'account_id'=>$request->id,
+            'amount'=>$request->amount,
+            'date'=>now(),
+        ]);
+        $transaction->save();
+
+        $account=Account::where('id',$request->id)->first();
+        $account->balance += $request->amount;
+        $account->save();
+
+        return redirect()->route('account.show',['id'=>$account->id]);
+    }
+
+    public function withdraw(){
+        $request=Request();
+        $transaction=Transaction::create([
+            'account_id'=>$request->id,
+            'amount'=>$request->amount,
+            'date'=>now(),
+        ]);
+        $transaction->save();
+
+        $account=Account::where('id',$request->id)->first();
+        $account->balance -= $request->amount;
+        $account->save();
+
+        $trans=Transaction::where('account_id',$request->id)->get();
+        // dd($trans);
+        return view('show',['account'=>$account,'trans'=>$trans]);
+    }
+
+    public function transfer(){
+        $request=Request();
+        $transaction=Transaction::create([
+            'account_id'=>$request->id,
+            'accountto_id'=>$request->accountto_id,
+            'amount'=>$request->amount,
+            'date'=>now(),
+        ]);
+        $transaction->save();
+
+        $account=Account::where('id',$request->id)->first();
+        $account->balance -= $request->amount;
+        $account->save();
+
+        $accountto=Account::where('id',$request->accountto_id)->first();
+        $accountto->balance += $request->amount;
+        $accountto->save();
+
+        $trans=Transaction::where('account_id',$request->id)->get();
+        // dd($trans);
+        return view('show',['account'=>$account,'trans'=>$trans]);
+    }
+
+    public function filterDate(){
+        $request=Request();
+        // dd($request->filter);
+        if($request->filter == "asc"){
+            $trans=Transaction::where('account_id',$request->id)->orderBy('date','asc')->get();
+            $account=Account::where('id',$request->id)->first();
+            // dd($trans);
+            return view('show',['account'=>$account,'trans'=>$trans]);
+        }
+        if($request->filter == "desc"){
+            $trans=Transaction::where('account_id',$request->id)->orderBy('date','desc')->get();
+            $account=Account::where('id',$request->id)->first();
+            // dd($trans);
+            return view('show',['account'=>$account,'trans'=>$trans]);
+        }
+
+    }
+
+    public function filterBank(){
+        $request=Request();
+        dd($request);
+        if($request->filter == "HSBC"){
+            $trans=Transaction::where('account_id',$request->id)->orderBy('date','desc')->get();
+            $account=Account::where('id',$request->id)->first();
+            // dd($trans);
+            return view('show',['account'=>$account,'trans'=>$trans]);
+        }
+
     }
 }
