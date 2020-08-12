@@ -40,10 +40,16 @@
       <td>Active</td>
       @endif
       @if($account->status === 0)
-      <td><a class="btn btn-success" href="{{route('account.status',['id'=>$account->id,'status'=>1])}}">Activate</a></td>
+      <td>
+      <a class="btn btn-success" href="{{route('account.status',['id'=>$account->id,'status'=>1])}}">Activate</a>
+      <a class="btn btn-primary" href="{{route('account.edit',['id'=>$account->id])}}">Update</a>
+      </td>
       @else
       <p>{{$account->status}}</p>
-      <td><a class="btn btn-danger" href="{{route('account.status',['id'=>$account->id,'status'=>0])}}">Deactivate</a></td>
+      <td>
+      <a class="btn btn-danger" href="{{route('account.status',['id'=>$account->id,'status'=>0])}}">Deactivate</a>
+      <a class="btn btn-primary" href="{{route('account.edit',['id'=>$account->id])}}">Update</a>
+      </td>
       @endif
     </tr>
     @endforeach

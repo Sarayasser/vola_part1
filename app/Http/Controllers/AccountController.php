@@ -38,9 +38,20 @@ class AccountController extends Controller
     public function edit(){
         $request=Request();
         $account=Account::where('id',$request->id)->first();
+        return view('edit',['account'=>$account]);
     }
     public function update(){
-
+        $request=Request();
+        $id=$request->id;
+        // dd($id);
+        if($request->currency || $request->type_of_account != null){
+        $account=Account::where('id',$id)->first()->update([
+            'currency'=>$request->currency,
+            'type_of_account'=>$request->type_of_account,
+        ]);
+        }
+        // $account->save();
+        return redirect('home');
     }
     public function delete(){
 
