@@ -12,7 +12,8 @@ class AccountController extends Controller
 {
     public function index(){
         $accounts=Account::all();
-        return view('index',['accounts'=>$accounts]);
+        $banks=Bank::all();
+        return view('index',['accounts'=>$accounts,'banks'=>$banks]);
     }
     public function create(){
         $banks=Bank::all();
@@ -69,5 +70,28 @@ class AccountController extends Controller
         $account->save();
 
         return redirect('/home');
+    }
+
+    public function filterBank(){
+        $request=Request();
+        // dd($request);
+        $banks=Bank::all();
+        if($request->filter == "1"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "2"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "3"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "all"){
+            $accounts=Account::all();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+
     }
 }
