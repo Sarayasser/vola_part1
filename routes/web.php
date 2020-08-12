@@ -31,9 +31,8 @@ Route::post('/home/{id}/deposit','AccountController@deposit')->name('account.dep
 Route::post('/home/{id}/withdraw','AccountController@withdraw')->name('account.withdraw');
 Route::post('/home/{id}/transfer','AccountController@transfer')->name('account.transfer');
 Route::get('/home/{id}/del','AccountController@delete')->name('account.delete');
-
+Route::get('/home/{bank}/filter','AccountController@filterBank')->name('account.filterBank');
 Route::get('/home/{id}/{filter}','AccountController@filterDate')->name('account.filterDate');
-Route::get('/home/{filter}/filter','AccountController@filterBank')->name('account.filterBank');
 
 
 Auth::routes();

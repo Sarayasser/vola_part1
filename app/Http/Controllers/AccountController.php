@@ -179,12 +179,23 @@ class AccountController extends Controller
 
     public function filterBank(){
         $request=Request();
-        dd($request);
-        if($request->filter == "HSBC"){
-            $trans=Transaction::where('account_id',$request->id)->orderBy('date','desc')->get();
-            $account=Account::where('id',$request->id)->first();
-            // dd($trans);
-            return view('show',['account'=>$account,'trans'=>$trans]);
+        // dd($request);
+        $banks=Bank::all();
+        if($request->filter == "1"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "2"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "3"){
+            $accounts=Account::where('bank_id',$request->filter)->get();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
+        }
+        if($request->filter == "all"){
+            $accounts=Account::all();
+            return view('index',['accounts'=>$accounts,'banks'=>$banks]);
         }
 
     }
