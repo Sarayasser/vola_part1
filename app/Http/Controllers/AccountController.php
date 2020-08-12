@@ -80,7 +80,6 @@ class AccountController extends Controller
         return redirect('/home');
     }
 
-<<<<<<< HEAD
     public function createTrans(){
         $request=Request();
         $account=Account::where('id',$request->id)->first();
@@ -175,15 +174,6 @@ class AccountController extends Controller
 
     public function filterBank(){
         $request=Request();
-        dd($request);
-        if($request->filter == "HSBC"){
-            $trans=Transaction::where('account_id',$request->id)->orderBy('date','desc')->get();
-            $account=Account::where('id',$request->id)->first();
-            // dd($trans);
-            return view('show',['account'=>$account,'trans'=>$trans]);
-=======
-    public function filterBank(){
-        $request=Request();
         // dd($request);
         $banks=Bank::all();
         if($request->filter == "1"){
@@ -201,7 +191,6 @@ class AccountController extends Controller
         if($request->filter == "all"){
             $accounts=Account::all();
             return view('index',['accounts'=>$accounts,'banks'=>$banks]);
->>>>>>> f98d2f724c6c173937606e09c692ca10d4bcbc87
         }
 
     }
